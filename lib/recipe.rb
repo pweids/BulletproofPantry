@@ -9,6 +9,16 @@ class Recipe
   end
 
   def getHealth
+    sum = 0.0
+    counter = 0
+    @ingredients.each do |el|
+      if el.getHealth != nil
+        sum += el.getHealth
+        counter += 1
+      end
+    end
+    average = sum / counter
+    return average
   end
 
   def wrap(s, width=78)
