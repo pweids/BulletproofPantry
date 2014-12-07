@@ -4,7 +4,7 @@ require_relative 'unit'
 
 module UnitUtils
   def qty
-    puts @unit.qty
+    return @unit.qty
   end
   
   def getUnit
@@ -14,6 +14,15 @@ module UnitUtils
   def unit
     return @unit.unit_name
   end
+
+  def unit_convert_to(unit_name)
+    @unit.convert_to(unit_name.to_sym)
+  end
+
+  def unit_convert_to!(unit_name)
+    @unit.convert_to!(unit_name.to_sym)
+  end
+
 end
 
 #simplified ingredient class
@@ -29,9 +38,16 @@ class Ingredient
   def addNotes (str)
     @notes += "\n#{str}"
   end
+
+  def ==(other)
+    return @name.downcase == other.name.downcase
+  end
+
+  def <=>(other)
+    return @name.downcase <=> other.name.downcase
 end
 
-#ingredient as it appears in a recipe
+#ingredient as it appears in a recipe. Just has a qty
 class RecipeIngredient < Ingredient
   include UnitUtils
   def initialize(args)
@@ -67,9 +83,3 @@ class PantryIngredient < Ingredient
     return @expiration > date
   end
 end
-
-pi = PantryIngredient.new({name: "beef", health: 7,
-  expiration: "12/10/2014", qty:10, unit: "oz"})
-
-puts Date.today
-puts pi.qty
