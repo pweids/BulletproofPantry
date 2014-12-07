@@ -1,6 +1,5 @@
 # encoding: utf-8
 require 'date'
-require_relative 'unit'
 
 module UnitUtils
   def qty

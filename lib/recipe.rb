@@ -1,5 +1,3 @@
-require_relative 'ingredient'
-
 class Recipe
   attr_accessor :ingredients, :title, :instructions
 
