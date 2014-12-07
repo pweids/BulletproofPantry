@@ -18,17 +18,9 @@ oz, ounce, ounces
 require 'set'
 
 class UnitFactory
-    @@volumeSet = Set.new ["gal", "gallon", "gallons",
-                 "qt", "quart", "quarts",
-                 "pt", "pint", "pints",
-                 "c", "cup", "cups",
-                 "fl.  oz.", "fl oz", "fluid ounce", "fluid ounces",
-                 "tbsp", "tablespoon", "tablespoons",
-                 "tsp", "teaspoon", "teaspoons"]
+    @@volumeSet = Set.new ["gal", "qt", "pt", "c", "fl oz", "tbsp", "tsp"]
                 
-    @@weightSet = Set.new ["g", "gram", "grams",
-                 "lb", "lbs", "pound", "pounds",
-                 "oz", "ounce", "ounces"]
+    @@weightSet = Set.new ["g", "lb", "oz"]
                  
   def self.newUnit(qty, name)
     name = name.to_s
@@ -43,24 +35,12 @@ class UnitFactory
 end
 
 class Unit
-  attr_reader :name, :aliases, :conversions
-  
-  @@definitions = {}
+  attr_reader :name, :conversions
   
   def initialize(name)
     @name = name
-    #@aliases = Set.new
-    #@conversions = {}
-    #add_alias(name)
+    #@conversions = {})
   end
-  
-  def add_alias(*args)
-    #args.each do |unit_alias|
-     # @aliases << unit_alias.to_s
-      #@definitions[unit_alias.to_s.downcase] = self
-    #end
-  end
-  
 end
 
 class VolumeUnit < Unit
