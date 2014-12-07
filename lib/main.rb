@@ -35,7 +35,7 @@ loop do
 		print "Enter the health on the Bulletproof scale from 1 to 7 or 0" +
 			" if unknown: "
 		health = gets.chomp.to_i
-		package[:health] = health if health >= 1 or health <= 7
+		package[:health] = health if health >= 1 || health <= 7
 
 		ingredient = RecipeIngredient.new(package)
 

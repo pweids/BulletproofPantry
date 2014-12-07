@@ -39,7 +39,8 @@ class Ingredient
   end
 
   def ==(other)
-    return @name.downcase == other.name.downcase
+    return @name.downcase.include? other.name.downcase ||
+      other.name.downcase.include? @name.downcase
   end
 
   def <=>(other)

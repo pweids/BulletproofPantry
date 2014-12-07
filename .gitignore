@@ -43,3 +43,4 @@ Temporary Items
 .apdisk
 
 *.rb~
+test/scratch.rb
