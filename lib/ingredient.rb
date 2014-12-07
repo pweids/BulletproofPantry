@@ -9,6 +9,10 @@ class Ingredient
     @name, @health = name, health
   end
   
+  def self.convert_to(unit)
+    #TODO: convert the current qty to this unit
+  end
+  
 end
 
 #ingredient as it appears in a recipe
