@@ -45,6 +45,7 @@ class Ingredient
 
   def <=>(other)
     return @name.downcase <=> other.name.downcase
+  end
 end
 
 #ingredient as it appears in a recipe. Just has a qty
