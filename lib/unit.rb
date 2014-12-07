@@ -21,7 +21,13 @@ class UnitFactory
   @@volumeSet = Set.new [:gal, :qt, :pt, :c, :'fl oz', :tbsp, :tsp]        
   @@weightSet = Set.new [:g, :lb, :oz]
                  
-  def self.build(qty, name)
+  def self.build(*args)
+    if args.length == 1 then 
+      qty, name = args[0].split
+      qty = qty.to_f
+    else qty, name = args
+    end
+    
     name = name.to_sym
     if @@volumeSet.include?(name)
       return VolumeUnit.new(qty, name)
@@ -129,6 +135,15 @@ class Unit
     puts "#{newQty} #{new_unit.to_s}"
   end
   
+  def change_to(new_unit)
+    @name = new_unit.to_sym
+    @qty = convert_to(new_unit)
+  end
+  
+  def to_s
+    return "#{@qty} #{@unit_name}"
+  end
+  
 end
 
 class VolumeUnit < Unit
@@ -156,8 +171,8 @@ class VolumeUnit < Unit
 end
 
 class WeightUnit < Unit
-  attr_reader :unit_names
-  attr_accessor :unit_name, :qty
+  attr_reader :unit_names, :unit_name
+  attr_accessor :qty
   @@unit_names = Set.new [:g, :lb, :oz]
   
   def initialize(qty, unit_name)
@@ -178,6 +193,3 @@ class WeightUnit < Unit
     super(new_unit)
   end
 end
-
-myUnit = UnitFactory.build(1.5, "lb")
-myUnit.convert_to("oz")

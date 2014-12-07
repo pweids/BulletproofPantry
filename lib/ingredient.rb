@@ -1,39 +1,66 @@
-# package of ingredient classes
+# encoding: utf-8
 require 'date'
+require_relative 'unit'
+
+module UnitUtils
+  def qty
+    puts @unit.qty
+  end
+  
+  def getUnit
+    return @unit
+  end
+  
+  def unit
+    return @unit.unit_name
+  end
+end
 
 #simplified ingredient class
 class Ingredient
   attr_reader :name, :health
   
-  def initialize(name, health)
+  attr_accessor :notes
+  
+  def initialize(name, health=nil)
     @name, @health = name, health
   end
   
-  def self.convert_to(unit)
-    #TODO: convert the current qty to this unit
+  def addNotes (str)
+    @notes += "\n#{str}"
   end
-  
 end
 
 #ingredient as it appears in a recipe
 class RecipeIngredient < Ingredient
-  attr_reader :qty
-  
+  include UnitUtils
   def initialize(args)
-    super(args[:name], args[:health])
-    unit = args[:unit].to_sym if not args[:unit].is_a? Symbol
+    if args[:health]
+      super(args[:name], args[:health])
+    else
+      super(args[:name])
+    end
+    unit = args[:unit].to_sym
+    @unit = UnitFactory.build(args[:qty], unit)
   end
 end
 
 #ingredient as it appears in the pantry
 class PantryIngredient < Ingredient
+  include UnitUtils
   attr_accessor :qty, :cost
   attr_reader :expiration
   
   def initialize(args)
-    super(args[:name], args[:health])
-    unit = args[:unit].to_sym if not args[:unit].is_a? Symbol
-    @expiration = Date.parse(args[:expiration])
+    if args[:health] then super(args[:name], args[:health])
+    else super(args[:name]) end
+      
+    if args[:expiration] then @expiration = Date.parse(args[:expiration])
+    else @expiration = nil end
+    
+    unit = args[:unit].to_sym
+    @unit = UnitFactory.build(args[:qty], unit)
+
   end
   
   def is_expired?(date = Date.today)
@@ -45,4 +72,4 @@ pi = PantryIngredient.new({name: "beef", health: 7,
   expiration: "12/10/2014", qty:10, unit: "oz"})
 
 puts Date.today
-puts pi.is_expired?
+puts pi.qty
