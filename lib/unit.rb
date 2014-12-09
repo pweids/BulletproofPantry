@@ -130,18 +130,28 @@ class Unit
   end
   
   def convert_to(new_unit)
-    newQty = @@conversions[@unit_name][new_unit].call(qty)
+    newQty = @@conversions[unit_name][new_unit].call(qty)
     
     puts "#{newQty} #{new_unit.to_s}"
   end
   
-  def change_to(new_unit)
-    @name = new_unit.to_sym
-    @qty = convert_to(new_unit)
+  def convert_to!(new_unit)
+    name = new_unit.to_sym
+    qty = convert_to(new_unit)
   end
   
   def to_s
-    return "#{@qty} #{@unit_name}"
+    return "#{qty} #{unit_name}"
+  end
+
+  private
+
+  def name
+    @name
+  end
+
+  def name=(new_name)
+    @name = new_name
   end
   
 end

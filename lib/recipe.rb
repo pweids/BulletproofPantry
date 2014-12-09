@@ -11,7 +11,7 @@ class Recipe
   def getHealth
     sum = 0.0
     counter = 0
-    @ingredients.each do |el|
+    ingredients.each do |el|
       if el.getHealth != nil
         sum += el.getHealth
         counter += 1
@@ -28,7 +28,7 @@ class Recipe
   def to_s
     str = ""
     max = 0
-    @ingredients.each do |i|
+    ingredients.each do |i|
       max = [i.name.length, max].max
     end
 
@@ -36,9 +36,9 @@ class Recipe
       str << sprintf("%s%3.2f %-4s\n", i.name.ljust(max+4, '.'), i.qty, i.unit)
     end
 
-    str << wrap(@instructions, max+14)
+    str << wrap(instructions, max+14)
 
-    str = "#{@title}".center(max+11) << "\n\n" << str
+    str = "#{title}".center(max+11) << "\n\n" << str
     return str
   end
 

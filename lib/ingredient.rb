@@ -35,7 +35,7 @@ class Ingredient
   end
   
   def addNotes (str)
-    @notes += "\n#{str}"
+    notes += "\n#{str}"
   end
 
   def ==(other)
@@ -44,12 +44,12 @@ class Ingredient
     elsif other.kind_of? Ingredient
       on = other.name.downcase
     else return false; end
-    tn = @name.downcase
+    tn = name.downcase
     return on.include?(tn) || tn.include?(on)
   end
 
   def <=>(other)
-    return @name.downcase <=> other.name.downcase
+    return name.downcase <=> other.name.downcase
   end
 end
 
@@ -87,10 +87,10 @@ class PantryIngredient < Ingredient
   end
   
   def is_expired?(date = Date.today)
-    return @expiration > date
+    return expiration > date
   end
 
   def to_s
-    return "#{@name}: #{@unit.qty} #{@unit.unit_name}"
+    return "#{name}: #{unit.qty} #{unit.unit_name}"
   end
 end
