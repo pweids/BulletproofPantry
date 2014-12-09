@@ -12,8 +12,8 @@ class Recipe
     sum = 0.0
     counter = 0
     ingredients.each do |el|
-      if el.getHealth != nil
-        sum += el.getHealth
+      if el.health != nil
+        sum += el.health
         counter += 1
       end
     end
