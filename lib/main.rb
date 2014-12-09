@@ -2,7 +2,9 @@ require_relative 'unit'
 require_relative 'ingredient'
 require_relative 'recipe'
 
-recipe_list = Array.new
+#TODO modify this so that it's synced with KirbyBase instead
+$recipe_list = Array.new
+$pantry_list = Array.new
 
 def initiate_add_recipe_dialog
 	loop do
@@ -52,10 +54,50 @@ def initiate_add_recipe_dialog
 		instructions = gets.chomp
 
 		# TODO: make a bool based on DB addition
-		recipe_list << Recipe.new(title, ingredient_array, instructions)
+		$recipe_list << Recipe.new(title, ingredient_array, instructions)
 		puts "It's saved!"
 
 		puts recipe_list[0]
 
 	end
+end
+
+
+# Pantry ingredient CRUD routines
+# members: qty, unit, cost, expiration, name, health
+def create_pantry_ingredient
+	print "\nIngredient's name: "
+	name = gets.chomp
+	print "\nIngredient's amount: "
+	qty = gets.chomp.to_i
+	print "\nIngredient's unit: "
+	unit = gets.chomp
+	print "\nIngredient's expiration date (MM-DD-YYYY)(optional): "
+	date = gets.chomp
+	print "\nIngredients health level (0-7)(optional): "
+	health = gets.chomp.to_i
+
+	payload = {name: name, qty: qty, unit: unit}
+	payload[:date] = date if date =~ /\d{1,2}-\d{1,2}-\d{4}/
+	payload[:health] = health if health =~ /^[0-7]$/
+	
+	$pantry_list << PantryIngredient.new(payload)
+
+	puts "Successfully added #{name} to the pantry"
+rescue => e
+	puts "Failed to initiate new ingredient: #{e}"
+end
+
+def read_pantry_ingredient(ingredient = nil)
+	if ingredient.kind_of? String
+		$pantry_list.select{|item| item == ingredient}.each{|item| puts item}
+	else
+		$pantry_list.each{|item| puts item}
+	end
+end
+
+def update_pantry_ingredient
+end
+
+def delete_pantry_ingredient
 end

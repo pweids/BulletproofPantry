@@ -39,7 +39,11 @@ class Ingredient
   end
 
   def ==(other)
-    on = other.name.downcase
+    if other.kind_of? String
+      on = other.downcase
+    elsif other.kind_of? Ingredient
+      on = other.name.downcase
+    else return false; end
     tn = @name.downcase
     return on.include?(tn) || tn.include?(on)
   end
@@ -73,7 +77,8 @@ class PantryIngredient < Ingredient
     if args[:health] then super(args[:name], args[:health])
     else super(args[:name]) end
       
-    if args[:expiration] then @expiration = Date.parse(args[:expiration])
+    if args[:expiration] then @expiration = Date.strptime(args[:expiration],
+      "%m-%d-%Y")
     else @expiration = nil end
     
     unit = args[:unit].to_sym
@@ -83,5 +88,9 @@ class PantryIngredient < Ingredient
   
   def is_expired?(date = Date.today)
     return @expiration > date
+  end
+
+  def to_s
+    return "#{@name}: #{@unit.qty} #{@unit.unit_name}"
   end
 end
