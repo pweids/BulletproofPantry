@@ -17,9 +17,7 @@ oz, ounce, ounces
 
 require 'set'
 
-class UnitFactory
-  @@volumeSet = Set.new [:gal, :qt, :pt, :c, :'fl oz', :tbsp, :tsp]        
-  @@weightSet = Set.new [:g, :lb, :oz]
+module UnitFactory
                  
   def self.build(*args)
     if args.length == 1 then 
@@ -29,14 +27,31 @@ class UnitFactory
     end
     
     name = name.to_sym
-    if @@volumeSet.include?(name)
-      return VolumeUnit.new(qty, name)
-    elsif @@weightSet.include?(name)
-      return WeightUnit.new(qty, name)
+    if volumeSet.include?(name)
+      return volumeUnit(qty, name)
+    elsif  weightSet.include?(name)
+      return weightUnit(qty, name)
     else 
       raise ArgumentError
     end
   end
+
+  def volumeUnit(qty, name)
+    VolumeUnit.new(qty, name)
+  end
+
+  def weightUnit(qty, name)
+    WeightUnit.new(qty, name)
+  end
+
+  def volumeSet
+    @@volumeSet ||= Set.new [:gal, :qt, :pt, :c, :'fl oz', :tbsp, :tsp]
+  end
+
+  def weightSet
+    @@weightSet ||= Set.new [:g, :lb, :oz]
+  end
+
   
 end
 

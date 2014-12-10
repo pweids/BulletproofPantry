@@ -3,23 +3,19 @@ require 'date'
 
 module UnitUtils
   def qty
-    return @unit.qty
+    return unit.qty
   end
   
-  def getUnit
-    return @unit
-  end
-  
-  def unit
-    return @unit.unit_name
+  def unit_name
+    return unit.unit_name
   end
 
   def unit_convert_to(unit_name)
-    @unit.convert_to(unit_name.to_sym)
+    unit.convert_to(unit_name.to_sym)
   end
 
   def unit_convert_to!(unit_name)
-    @unit.convert_to!(unit_name.to_sym)
+    unit.convert_to!(unit_name.to_sym)
   end
 
 end
@@ -85,6 +81,6 @@ class PantryIngredient < Ingredient
   end
 
   def to_s
-    return "#{name}: #{unit.qty} #{unit.unit_name}"
+    return "#{name}: #{qty} #{unit_name}"
   end
 end
