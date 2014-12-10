@@ -55,6 +55,7 @@ end
 
 #ingredient as it appears in a recipe. Just has a qty
 class RecipeIngredient < Ingredient
+  attr_reader :unit
   include UnitUtils
   def initialize(args)
     if args[:health]
@@ -62,27 +63,20 @@ class RecipeIngredient < Ingredient
     else
       super(args[:name])
     end
-    unit = args[:unit].to_sym
-    @unit = UnitFactory.build(args[:qty], unit)
+    @unit = args[:unit]
   end
 end
 
 #ingredient as it appears in the pantry
 class PantryIngredient < Ingredient
   include UnitUtils
-  attr_accessor :qty, :cost
-  attr_reader :expiration
+  attr_reader :expiration, :unit, :cost
   
   def initialize(args)
     if args[:health] then super(args[:name], args[:health])
     else super(args[:name]) end
-      
-    if args[:expiration] then @expiration = Date.strptime(args[:expiration],
-      "%m-%d-%Y")
-    else @expiration = nil end
-    
-    unit = args[:unit].to_sym
-    @unit = UnitFactory.build(args[:qty], unit)
+    @expiration = args[:expiration]
+    @unit = args[:unit]
 
   end
   

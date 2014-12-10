@@ -77,8 +77,9 @@ def create_pantry_ingredient
 	print "\nIngredients health level (0-7)(optional): "
 	health = gets.chomp.to_i
 
-	payload = {name: name, qty: qty, unit: unit}
-	payload[:date] = date if date =~ /\d{1,2}-\d{1,2}-\d{4}/
+  unitObj = UnitFactory.build(qty, unit)
+	payload = {name: name, unit: unitObj}
+	payload[:date] = Date.strptime(date, "%m-%d-%Y") if date =~ /\d{1,2}-\d{1,2}-\d{4}/
 	payload[:health] = health if health =~ /^[0-7]$/
 	
 	$pantry_list << PantryIngredient.new(payload)
