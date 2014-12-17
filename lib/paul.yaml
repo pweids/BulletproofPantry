@@ -1,0 +1,72 @@
+--- !ruby/object:User
+pantry: !ruby/object:Pantry
+  stock: []
+recipe_book: !ruby/object:RecipeBook
+  recipes:
+  - !ruby/object:Recipe
+    title: Beef Stew
+    ingredients: !ruby/object:Set
+      hash:
+        ? !ruby/object:RecipeIngredient
+          name: Butter
+          health: 7
+          unit: !ruby/object:Unit
+            qty: 1.0
+            unit_name: :tbsp
+        : true
+        ? !ruby/object:RecipeIngredient
+          name: beef
+          health: 7
+          unit: !ruby/object:Unit
+            qty: 1.0
+            unit_name: :lb
+        : true
+        ? !ruby/object:RecipeIngredient
+          name: mct oil
+          health: 7
+          unit: !ruby/object:Unit
+            qty: 3.0
+            unit_name: :tbsp
+        : true
+        ? !ruby/object:RecipeIngredient
+          name: carrots
+          health: 6
+          unit: !ruby/object:Unit
+            qty: 0.5
+            unit_name: :lb
+        : true
+    instructions: cook it all!
+  - !ruby/object:Recipe
+    title: guacamole
+    ingredients: !ruby/object:Set
+      hash:
+        ? !ruby/object:RecipeIngredient
+          name: avacado
+          health: 7
+          unit: !ruby/object:Unit
+            qty: 1.0
+            unit_name: :lb
+        : true
+        ? !ruby/object:RecipeIngredient
+          name: mct oil
+          health: 7
+          unit: !ruby/object:Unit
+            qty: 3.0
+            unit_name: :tbsp
+        : true
+        ? !ruby/object:RecipeIngredient
+          name: oregano
+          health: 7
+          unit: !ruby/object:Unit
+            qty: 1.0
+            unit_name: :tbsp
+        : true
+        ? !ruby/object:RecipeIngredient
+          name: lime juice
+          health: 5
+          unit: !ruby/object:Unit
+            qty: 3.0
+            unit_name: :tbsp
+        : true
+    instructions: mix it in a bowl
+name: Paul

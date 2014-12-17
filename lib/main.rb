@@ -1,12 +1,10 @@
-require_relative 'unit'
-require_relative 'ingredient'
-require_relative 'recipe'
+require_relative "user"
+require_relative "ingredient"
+require_relative "recipe"
+require_relative "unit"
+require "yaml"
 
-#TODO modify this so that it's synced with KirbyBase instead
-$recipe_list = Array.new
-$pantry_list = Array.new
-
-def initiate_add_recipe_dialog
+def initiate_add_recipe_dialog(user)
 	loop do
 		print "Add new recipe? (y/n) "
 		resp = gets.downcase.chomp
@@ -27,13 +25,15 @@ def initiate_add_recipe_dialog
 			i += 1
 			puts "\nIngredient #{i}:"
 			input = gets.chomp
-			break if input == "done"
+			break if input == "done" || input == ""
 
 			input_array = input.split
 			package = Hash.new
-			package[:name] = input_array[0...-2].join(" ")
-			package[:qty] = input_array[-2]
-			package[:unit] = input_array[-1]
+			name = input_array[0...-2].join(" ")
+			qty = input_array[-2]
+			unit = input_array[-1]
+			package[:name] = name
+			package[:unit] = Unit.new(qty, unit)
 
 			print "Enter the health from 1 to 7 or 0" +
 				" if unknown: "
@@ -47,17 +47,15 @@ def initiate_add_recipe_dialog
 
 		puts "\nCool. We got"
 		ingredient_array.each do |i|
-			puts "#{i.qty} #{i.unit} of #{i.name}"
+			puts "#{i.unit} of #{i.name}"
 		end
 
 		puts "\nType out instructions (or leave blank):"
 		instructions = gets.chomp
 
 		# TODO: make a bool based on DB addition
-		$recipe_list << Recipe.new(title, ingredient_array, instructions)
+		user.add_recipe(Recipe.new(title, ingredient_array, instructions))
 		puts "It's saved!"
-
-		puts recipe_list[0]
 
 	end
 end
@@ -65,7 +63,7 @@ end
 
 # Pantry ingredient CRUD routines
 # members: qty, unit, cost, expiration, name, health
-def create_pantry_ingredient
+def create_pantry_ingredient_dialog(user)
 	print "\nIngredient's name: "
 	name = gets.chomp
 	print "\nIngredient's amount: "
@@ -82,23 +80,32 @@ def create_pantry_ingredient
 	payload[:date] = Date.strptime(date, "%m-%d-%Y") if date =~ /\d{1,2}-\d{1,2}-\d{4}/
 	payload[:health] = health if health =~ /^[0-7]$/
 	
-	$pantry_list << PantryIngredient.new(payload)
+	user.add_ingredient_to_pantry(PantryIngredient.new(payload))
 
 	puts "Successfully added #{name} to the pantry"
 rescue => e
 	puts "Failed to initiate new ingredient: #{e}"
 end
 
-def read_pantry_ingredient(ingredient = nil)
-	if ingredient.kind_of? String
-		$pantry_list.select{|item| item == ingredient}.each{|item| puts item}
-	else
-		$pantry_list.each{|item| puts item}
-	end
+def save_user(user)
+	yaml = YAML::dump(user)
+	fname = user.name.downcase + ".yaml"
+	File.new(fname, 'w').write(yaml)
 end
 
-def update_pantry_ingredient
+def load_user(name)
+	fname = name + ".yaml"
+	yaml = File.open(fname, 'r').read
+	YAML::load(yaml)
 end
 
-def delete_pantry_ingredient
+#userp = User.new("Paul")
+#initiate_add_recipe_dialog(userp)
+#save_user(userp)
+
+userp = load_user("Paul")
+userp.getRecipes.each{|r| puts r}
+loop do
+	create_pantry_ingredient_dialog(userp)
+	save_user(userp)
 end
