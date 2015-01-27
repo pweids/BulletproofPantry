@@ -10,12 +10,12 @@ class User
   end
 
   def add_recipe(recipe)
-    recipe_book.addRecipe(recipe)
+    recipe_book.add_recipe(recipe)
   end
 
   def add_ingredient_to_pantry(ingredient)
     if !ingredient.nil?
-      @pantry.add_igredient(ingredient)
+      @pantry.add_ingredient(ingredient)
     end
   end
 
@@ -24,7 +24,10 @@ class User
   end
 
   def available_recipes
-    @recipe_book.what_can_I_make?(@pantry)
+    @pantry.what_can_I_make?(@recipe_book)
   end
   
+  def display_pantry
+    pantry.display_ingredients
+  end
 end

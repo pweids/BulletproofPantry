@@ -97,7 +97,7 @@ def save_user(user)
 end
 
 def load_user(name)
-	fname = name + ".yaml"
+	fname = name.downcase + ".yaml"
 	yaml = File.open(fname, 'r').read
 	YAML::load(yaml)
 end
@@ -107,8 +107,4 @@ end
 #save_user(userp)
 
 userp = load_user("Paul")
-userp.get_recipes.each{|r| puts r}
-loop do
-	create_pantry_ingredient_dialog(userp)
-	save_user(userp)
-end
+#userp.get_recipes.each{|r| puts r}

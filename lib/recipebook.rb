@@ -7,17 +7,19 @@ class RecipeBook
     @recipes = Array.new
   end
 
-  def each
-    @recipes.each do
-      yield
-    end
+  def each &block
+    @recipes.each(&block)
   end
 
-  def addRecipe(recipe)
+  def select &block
+    @recipes.select(&block)
+  end
+
+  def add_recipe(recipe)
     @recipes << recipe
   end
 
-  def getRecipe(name)
+  def get_recipe(name)
     ret = @recipes.select{|r| r.title.include? name}
     if ret.length == 1
       ret[0]
@@ -25,11 +27,7 @@ class RecipeBook
     end
   end
 
-  def getAllRecipes
+  def get_all_recipes
     @recipes
-  end
-
-  def whatCanIMake?(pantry)
-    @recipes.select {|recipe| pantry.can_I_make?(recipe)}
   end
 end

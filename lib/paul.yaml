@@ -1,6 +1,46 @@
 --- !ruby/object:User
 pantry: !ruby/object:Pantry
-  stock: []
+  stock:
+  - !ruby/object:PantryIngredient
+    name: butter
+    health: 
+    expiration: 
+    unit: !ruby/object:VolumeUnit
+      qty: 1.0
+      unit_name: :tbsp
+    cost: 3.29
+  - !ruby/object:PantryIngredient
+    name: beef
+    health: 
+    expiration: 
+    unit: !ruby/object:WeightUnit
+      qty: 2.0
+      unit_name: :lb
+    cost: 18.98
+  - !ruby/object:PantryIngredient
+    name: mct oil
+    health: 
+    expiration: 
+    unit: !ruby/object:VolumeUnit
+      qty: 5.0
+      unit_name: :c
+    cost: 0.0
+  - !ruby/object:PantryIngredient
+    name: carrots
+    health: 
+    expiration: 
+    unit: !ruby/object:WeightUnit
+      qty: 1.0
+      unit_name: :lb
+    cost: 0.0
+  - !ruby/object:PantryIngredient
+    name: avacado
+    health: 
+    expiration: 
+    unit: !ruby/object:WeightUnit
+      qty: 1.0
+      unit_name: :lb
+    cost: 0.0
 recipe_book: !ruby/object:RecipeBook
   recipes:
   - !ruby/object:Recipe
