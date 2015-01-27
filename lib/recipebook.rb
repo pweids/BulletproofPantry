@@ -18,6 +18,11 @@ class RecipeBook
   end
 
   def getRecipe(name)
+    ret = @recipes.select{|r| r.title.include? name}
+    if ret.length == 1
+      ret[0]
+    else ret
+    end
   end
 
   def getAllRecipes
@@ -25,6 +30,6 @@ class RecipeBook
   end
 
   def whatCanIMake?(pantry)
-    @recipes.select {|recipe| pantry.canIMake?(recipe)}
+    @recipes.select {|recipe| pantry.can_I_make?(recipe)}
   end
 end

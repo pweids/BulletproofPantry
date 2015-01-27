@@ -70,6 +70,8 @@ def create_pantry_ingredient_dialog(user)
 	qty = gets.chomp.to_i
 	print "\nIngredient's unit: "
 	unit = gets.chomp
+	print "\nIngredient's cost (optional):"
+	cost = gets.chomp
 	print "\nIngredient's expiration date (MM-DD-YYYY)(optional): "
 	date = gets.chomp
 	print "\nIngredients health level (0-7)(optional): "
@@ -78,7 +80,8 @@ def create_pantry_ingredient_dialog(user)
   unitObj = UnitFactory.build(qty, unit)
 	payload = {name: name, unit: unitObj}
 	payload[:date] = Date.strptime(date, "%m-%d-%Y") if date =~ /\d{1,2}-\d{1,2}-\d{4}/
-	payload[:health] = health if health =~ /^[0-7]$/
+	payload[:health] = health.to_i if health =~ /^[0-7]$/
+	payload[:cost] = cost.to_f if cost =~ /[0-9]*\.?[0-9]*/
 	
 	user.add_ingredient_to_pantry(PantryIngredient.new(payload))
 
@@ -104,7 +107,7 @@ end
 #save_user(userp)
 
 userp = load_user("Paul")
-userp.getRecipes.each{|r| puts r}
+userp.get_recipes.each{|r| puts r}
 loop do
 	create_pantry_ingredient_dialog(userp)
 	save_user(userp)

@@ -61,79 +61,89 @@ class Unit
   
   def initialize_procs
     #gallon procs
-    gal = {qt: Proc.new {|g| g * 4.0},
-      pt: Proc.new {|g| g * 8.0},
-      c: Proc.new {|g| g * 16.0},
+    gal = {
+      qt:         Proc.new {|g| g * 4.0},
+      pt:         Proc.new {|g| g * 8.0},
+      c:          Proc.new {|g| g * 16.0},
       :'fl oz' => Proc.new {|g| g * 128.0},
-      tbsp: Proc.new {|g| g * 256.0},
-      tsp: Proc.new {|g| g * 768.0}
+      tbsp:       Proc.new {|g| g * 256.0},
+      tsp:        Proc.new {|g| g * 768.0}
     }
     
     #quart procs
-    qt = {gal: Proc.new{|qt| qt / 4.0},
-      pt: Proc.new{|qt| qt * 2.0},
-      c: Proc.new{|qt| qt * 4.0},
+    qt = {
+      gal:        Proc.new{|qt| qt / 4.0},
+      pt:         Proc.new{|qt| qt * 2.0},
+      c:          Proc.new{|qt| qt * 4.0},
       :'fl oz' => Proc.new{|qt| qt * 32.0},
-      tbsp: Proc.new{|qt| qt * 64.0},
-      tsp: Proc.new{|qt| qt * 192.0},
+      tbsp:       Proc.new{|qt| qt * 64.0},
+      tsp:        Proc.new{|qt| qt * 192.0},
     }
     
     #pint procs
-    pt = {gal: Proc.new{|pt| pt / 8.0},
-      qt: Proc.new{|pt| pt / 2.0},
-      c: Proc.new{|pt| pt * 2.0},
+    pt = {
+      gal:        Proc.new{|pt| pt / 8.0},
+      qt:         Proc.new{|pt| pt / 2.0},
+      c:          Proc.new{|pt| pt * 2.0},
       :'fl oz' => Proc.new{|pt| pt * 16.0},
-      tbsp: Proc.new{|pt| pt * 32.0},
-      tsp: Proc.new{|pt| pt * 96.0},
+      tbsp:       Proc.new{|pt| pt * 32.0},
+      tsp:        Proc.new{|pt| pt * 96.0},
     }
     
     #cup procs
-    c = {gal: Proc.new{|c| c / 16.0 },
-      qt: Proc.new{|c| c / 4.0 },
-      pt: Proc.new{|c| c / 2.0},
+    c = {
+      gal:        Proc.new{|c| c / 16.0 },
+      qt:         Proc.new{|c| c / 4.0 },
+      pt:         Proc.new{|c| c / 2.0},
       :'fl oz' => Proc.new{|c| c * 8.0},
-      tbsp: Proc.new{|c| c * 16.0},
-      tsp: Proc.new{|c| c * 48.0},
+      tbsp:       Proc.new{|c| c * 16.0},
+      tsp:        Proc.new{|c| c * 48.0},
     }
     
     #fl oz procs
-    fl_oz = {gal: Proc.new{|oz| oz / 128.0},
-      qt: Proc.new{|oz| oz / 32.0},
-      pt: Proc.new{|oz| oz / 16.0},
-      c: Proc.new{|oz| oz / 8.0},
+    fl_oz = {
+      gal:  Proc.new{|oz| oz / 128.0},
+      qt:   Proc.new{|oz| oz / 32.0},
+      pt:   Proc.new{|oz| oz / 16.0},
+      c:    Proc.new{|oz| oz / 8.0},
       tbsp: Proc.new{|oz| oz * 2.0},
-      tsp: Proc.new{|oz| oz * 6.0},
+      tsp:  Proc.new{|oz| oz * 6.0},
     }
     
     #tbsp procs
-    tbsp = {gal: Proc.new{|tbsp| tbsp / 256.0},
-      qt: Proc.new{|tbsp| tbsp / 64.0},
-      pt: Proc.new{|tbsp| tbsp / 32.0},
-      c: Proc.new{|tbsp| tbsp / 16.0},
+    tbsp = {
+      gal:        Proc.new{|tbsp| tbsp / 256.0},
+      qt:         Proc.new{|tbsp| tbsp / 64.0},
+      pt:         Proc.new{|tbsp| tbsp / 32.0},
+      c:          Proc.new{|tbsp| tbsp / 16.0},
       :'fl oz' => Proc.new{|tbsp| tbsp / 2.0},
-      tsp: Proc.new{|tbsp| tbsp / 3.0},
+      tsp:        Proc.new{|tbsp| tbsp / 3.0},
     }
     
     #tsp procs
-    tsp = {gal: Proc.new{|tsp| tsp / 768.0},
-      qt: Proc.new{|tsp| tsp / 192.0},
-      pt: Proc.new{|tsp| tsp / 96.0},
-      c: Proc.new{|tsp| tsp / 48.0},
+    tsp = {
+      gal:        Proc.new{|tsp| tsp / 768.0},
+      qt:         Proc.new{|tsp| tsp / 192.0},
+      pt:         Proc.new{|tsp| tsp / 96.0},
+      c:          Proc.new{|tsp| tsp / 48.0},
       :'fl oz' => Proc.new{|tsp| tsp / 6.0},
-      tbsp: Proc.new{|tsp| tsp / 3.0},
+      tbsp:       Proc.new{|tsp| tsp / 3.0},
     }
     
     #gram procs
-    g = {lb: Proc.new{|g| (g / 453.592).round(1)},
+    g = {
+      lb: Proc.new{|g| (g / 453.592).round(1)},
       oz: Proc.new{|g| (g * 0.035274).round}}
       
     #pound procs
-    lb = {g: Proc.new{|lb| (lb * 453.592).round},
+    lb = {
+      g:  Proc.new{|lb| (lb * 453.592).round},
       oz: Proc.new{|lb| lb * 16.0}}
       
     #ounce procs
-    oz = {lb: Proc.new{|oz| oz / 16.0},
-      g: Proc.new{|oz| round(oz * 28.3495)}}
+    oz = {
+      lb: Proc.new{|oz| oz / 16.0},
+      g:  Proc.new{|oz| round(oz * 28.3495)}}
     @@conversions = {gal: gal, qt: qt, pt: pt, c: c, :'fl oz' => fl_oz,
       tbsp: tbsp, tsp: tsp, g: g, lb: lb, oz: oz}
   end

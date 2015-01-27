@@ -3,29 +3,35 @@ class Pantry
     @stock = Array.new
   end
 
-  def canIMake?(recipe)
+  def can_I_make?(recipe)
+    recipe.ingredients.each do |ing|
+      return false if !@stock.include? ing
+    end
+    return true
   end
 
-  def whatIsMissing?(recipe)
+  def what_ingredients_are_missing_in?(recipe)
+    @recipe.ingredients.select{|item| !@stock.include?(item)}
   end
 
-  def whatIsExpired?
+  def what_is_expired?
+    @stock.select{|item| item.is_expired?}
   end
 
-  def addIngredient(ingredient)
+  def add_ingredient(ingredient)
     @stock << ingredient
   end
 
-  def removeIngredient(ingredient)
+  def remove_ingredient(ingredient)
   end
 
-  def updateIngredient(ingredient)
+  def update_ingredient(ingredient)
   end
 
-  def displayIngredients
+  def display_ingredients
   end
 
-  def findIngredient(name)
-    @stock.select{|item| item == ingredient}
+  def find_ingredient(name)
+    @stock.select{|item| item == name}
   end
 end

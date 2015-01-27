@@ -15,11 +15,16 @@ class User
 
   def add_ingredient_to_pantry(ingredient)
     if !ingredient.nil?
-      @pantry.addIngredient(ingredient)
+      @pantry.add_igredient(ingredient)
     end
   end
 
-  def getRecipes
-    @recipe_book.getAllRecipes
+  def get_recipes
+    @recipe_book.get_all_recipes
   end
+
+  def available_recipes
+    @recipe_book.what_can_I_make?(@pantry)
+  end
+  
 end

@@ -73,7 +73,7 @@ class PantryIngredient < Ingredient
     else super(args[:name]) end
     @expiration = args[:expiration]
     @unit = args[:unit]
-
+    @cost = args[:cost]
   end
   
   def is_expired?(date = Date.today)
