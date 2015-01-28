@@ -137,9 +137,7 @@ class Main < Shoes
   	stack do
   		button("View Recipes", :width => 200)
   		button("View Pantry", :width => 200) {visit ('/pantry')}
-  		button("Add an Ingredient", :width => 200)
   		button("What can I Make?", :width => 200)
-  		button("Add a Recipe", :width => 200)
   	end
   end
 
@@ -153,34 +151,53 @@ class Main < Shoes
   			  	Shoes.debug @@user.pantry if $debug
   			  }
   		end
-  		button("Add Ingredient") do
-  			window do
-  				stack do
-						para "\nIngredient's name: "
-						@name = edit_line
-						para "\nIngredient's amount: "
-						@qty = edit_line
-						para "\nIngredient's unit: "
-						@unit = edit_line
-						para "\nIngredient's cost (optional):"
-						@cost = edit_line
-						para "\nIngredient's expiration date (MM-DD-YYYY)(optional): "
-						@date = edit_line
-						para "\nIngredients health level (0-7)(optional): "
-						@health = edit_line
+  		flow do
+	  		button("Add Ingredient") do
+	  			mainwindow = self
+	  			window do
+	  				stack do
+		  				flow do
+			  				stack :width => "60%" do
+									para("Ingredient's name: ")
+									para("Ingredient's amount: ")
+									para "Ingredient's unit: "
+									para "Ingredient's cost (optional):"
+									para "Ingredient's expiration date (MM-DD-YYYY)(optional): "
+									para "Ingredients health level (0-7)(optional): "
+								end
+								stack :width => "40%" do
+									@name 	= edit_line :margin_bottom => 10
+									@qty 		= edit_line :margin_bottom => 10
+									@unit 	= edit_line :margin_bottom => 10
+									@cost 	= edit_line :margin_bottom => 10
+									@date 	= edit_line :margin_bottom => 10
+									@health = edit_line :margin_bottom => 10
+								end
+							end
 
-						button ("Add") do
-							Shoes.debug @unit.text
-						  @unitObj = UnitFactory.build(@qty.text.to_i, @unit.text)
-							payload = {name: @name.text, unit: @unitObj}
-							payload[:date] = Date.strptime(@date.text, "%m-%d-%Y") if @date.text =~ /\d{1,2}-\d{1,2}-\d{4}/
-							payload[:health] = @health.text.to_i if @health.text =~ /^[0-7]$/
-							payload[:cost] = @cost.text.to_f if @cost.text =~ /[0-9]*\.?[0-9]*/
-							
-							@@user.add_ingredient_to_pantry(PantryIngredient.new(payload))
-							self.close
+							flow do
+								button("Add") do
+								  @unitObj = UnitFactory.build(@qty.text.to_i, @unit.text)
+									payload = {name: @name.text, unit: @unitObj}
+									payload[:date] = Date.strptime(@date.text, "%m-%d-%Y") if @date.text =~ /\d{1,2}-\d{1,2}-\d{4}/
+									payload[:health] = @health.text.to_i if @health.text =~ /^[0-7]$/
+									payload[:cost] = @cost.text.to_f if @cost.text =~ /[0-9]*\.?[0-9]*/
+									
+									@@user.add_ingredient_to_pantry(PantryIngredient.new(payload))
+									self.close
+									mainwindow.visit('/pantry')
+								end
+
+								button("Cancel") do
+									self.close
+								end
 						end
+					end
   				end
+  			end
+
+  			button("Back") do
+  				visit('/dialog')
   			end
   		end
   	end
