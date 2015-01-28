@@ -1,4 +1,5 @@
 class Pantry
+  attr_reader :stock
   def initialize
     @stock = Array.new
   end
@@ -25,6 +26,7 @@ class Pantry
   end
 
   def remove_ingredient(ingredient)
+    @stock.delete_if{|item| item == ingredient}
   end
 
   def update_ingredient(ingredient)

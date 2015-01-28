@@ -3,6 +3,7 @@ require_relative "ingredient"
 require_relative "recipe"
 require_relative "unit"
 require "yaml"
+$debug = true
 
 def initiate_add_recipe_dialog(user)
 	loop do
@@ -100,11 +101,99 @@ def load_user(name)
 	fname = name.downcase + ".yaml"
 	yaml = File.open(fname, 'r').read
 	YAML::load(yaml)
+rescue => e
+	return nil
 end
 
+class Main < Shoes
+  url '/', :index
+  url '/dialog', :dialog
+  url '/pantry', :pantry
+  @@user
+
+  def index
+    stack do
+      title "Bulletproof Pantry"
+      para "Please enter your name:"
+      @name = edit_line
+      button "Enter" do
+        @@user = load_user(@name.text)
+        if @@user == nil
+        	create = confirm("User does not exist. Create new one?")
+        	if create
+        		@@user = User.new(@name)
+        	else
+        		visit('/')
+        		return
+        	end
+        end
+        @name.text = ""
+   			visit('/dialog')
+      end
+    end
+  end
+
+  def dialog
+  	stack do
+  		button("View Recipes", :width => 200)
+  		button("View Pantry", :width => 200) {visit ('/pantry')}
+  		button("Add an Ingredient", :width => 200)
+  		button("What can I Make?", :width => 200)
+  		button("Add a Recipe", :width => 200)
+  	end
+  end
+
+  def pantry
+  	stack do
+  		@@user.display_pantry.each do
+  			|ing| para ing, " ",
+  			  link("delete") {|x| 
+  			  	x.parent.remove
+  			  	@@user.pantry.remove_ingredient(ing)
+  			  	Shoes.debug @@user.pantry if $debug
+  			  }
+  		end
+  		button("Add Ingredient") do
+  			window do
+  				stack do
+						para "\nIngredient's name: "
+						@name = edit_line
+						para "\nIngredient's amount: "
+						@qty = edit_line
+						para "\nIngredient's unit: "
+						@unit = edit_line
+						para "\nIngredient's cost (optional):"
+						@cost = edit_line
+						para "\nIngredient's expiration date (MM-DD-YYYY)(optional): "
+						@date = edit_line
+						para "\nIngredients health level (0-7)(optional): "
+						@health = edit_line
+
+						button ("Add") do
+							Shoes.debug @unit.text
+						  @unitObj = UnitFactory.build(@qty.text.to_i, @unit.text)
+							payload = {name: @name.text, unit: @unitObj}
+							payload[:date] = Date.strptime(@date.text, "%m-%d-%Y") if @date.text =~ /\d{1,2}-\d{1,2}-\d{4}/
+							payload[:health] = @health.text.to_i if @health.text =~ /^[0-7]$/
+							payload[:cost] = @cost.text.to_f if @cost.text =~ /[0-9]*\.?[0-9]*/
+							
+							@@user.add_ingredient_to_pantry(PantryIngredient.new(payload))
+							self.close
+						end
+  				end
+  			end
+  		end
+  	end
+  end
+
+
+end
+
+Shoes.show_log
+Shoes.app
 #userp = User.new("Paul")
 #initiate_add_recipe_dialog(userp)
 #save_user(userp)
 
-userp = load_user("Paul")
+#userp = load_user("Paul")
 #userp.get_recipes.each{|r| puts r}

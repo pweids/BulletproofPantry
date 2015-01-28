@@ -28,6 +28,6 @@ class User
   end
   
   def display_pantry
-    pantry.display_ingredients
+    pantry.stock
   end
 end
